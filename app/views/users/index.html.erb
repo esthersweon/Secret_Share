@@ -1,0 +1,67 @@
+<h1>Users Index</h1>
+
+<ul>
+  <% @users.each do |user| %>
+
+  <li><%= user.username %> --
+
+
+    <% if Friendship.can_friend?(current_user.id, user.id) %>
+      <% friend_status = 'can-friend'%>
+    <% elsif Friendship.can_unfriend?(current_user.id, user.id) %>
+      <% friend_status = 'can-unfriend'%>
+    <% end %>
+
+    <% unless current_user.id == user.id %>
+      <div class="friend-buttons <%= friend_status %>">
+        <button data-inid = "<%= user.id %>" class="friend"> Add Friend! </button>
+        <button data-inid = "<%= user.id %>" data-outid = "<%= current_user.id %>"
+          class="unfriend"> Unfriend! </button>
+      </div>
+    <% end %>
+
+  </li>
+<% end %>
+
+</ul>
+
+<script>
+$(function() {
+  $('.friend').on("click", function() {
+    var button = this;
+    event.preventDefault();
+
+    $(button).html('Friending..');
+
+    $.ajax({
+      url: 'http://localhost:3000/users/' + $(this).attr('data-inid') + '/friendships',
+      type: "POST",
+      success: function () {
+        $(button).html('Add Friend!')
+        toggleFriendButtons(button);
+      }
+    })
+  })
+
+  $('.unfriend').on('click', function () {
+    var button = this;
+
+    $(button).html('Unfriending..');
+
+    $.ajax({
+      url: 'http://localhost:3000/users/' + $(this).attr('data-inid')
+        + '/friendships/' + $(this).attr('data-outid'),
+      type: "DELETE",
+      success: function () {
+        $(button).html('Unfriend!')
+        toggleFriendButtons(button);
+      }
+    })
+  })
+
+  var toggleFriendButtons = function(button) {
+    $(button).parent().toggleClass('can-unfriend can-friend');
+  }
+
+});
+</script>
