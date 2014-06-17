@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
     if @user.save
       sign_in(@user)
-      redirect_to user_url(@user)
+      redirect_to users_url
     else
       render :json => @user.errors.full_messages
     end

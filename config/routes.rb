@@ -7,5 +7,5 @@ SecretShareAjax::Application.routes.draw do
   resource :session, :only => [:create, :destroy, :new]
   resources :secrets, :only => [:create]
 
-  root :to => "users#show"
+  root :to => "users#index"
 end
