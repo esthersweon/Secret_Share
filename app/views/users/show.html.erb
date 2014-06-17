@@ -1,14 +1,14 @@
 <h1><%= @user.username %></h1>
 
-<h2>Secrets</h2>
-<ul class="users_list">
+<h2>Wall</h2>
+<ul class="secrets_list">
   <% @user.received_secrets.each do |secret| %>
     <li><%= secret.title %>
-    <form action="<%= secret_url(secret) %>" method="POST">
+<!--     <form action="<%= secret_url(secret) %>" method="POST">
       <input type="hidden" name="_method" value="DELETE">
       <input type="hidden" name="secret[id]" value="<%= secret.id %>">
-      <input type="submit" value="DELETE"%>
-    </form>
+      <input type="submit" value="Delete"%>
+    </form> -->
   </li>
     <ul>
       <% secret.tags.each do |tag| %>
@@ -18,41 +18,34 @@
   <% end %>
 </ul>
 
-<%= render 'secrets/form.html.erb', user: @user %>
+<% if flash[:errors] %>
+  <% flash[:errors].each do |error| %>
+    <%= error %>
+  <% end %> 
+<% end %>
+
+<%= render 'secrets/form', secret: @user.received_secrets.new %>
 <br>
 <%= link_to "Back to Users", users_url %>
-<!-- 
+
+
 <script>
-  $(function() {
-
-    $('form').on('submit', function(event) {
-
+    $("form.secrets_form").on("submit", function (event) {
       event.preventDefault();
-      var formString = this;
-      var formdata = $(this).serializeJSON();
-      var target = $(".secret").val();
-      console.log(target);
+
+      var $currentTarget = $(event.currentTarget);
+      var data = $currentTarget.serializeJSON();
 
       $.ajax({
-        url: 'http://localhost:3000/secrets',
+        url: '/secrets',
         type: 'POST',
-        data: formdata,
-        success: function () {
-          $.ajax({
-            url: 'http://localhost:3000/secrets.json',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-              secrets = data;
-              render();
-            }
-          })
-        }
-      })
-      var render = function () {
-        $(".dropdown").html(templateFunction({: ideas}));
-      }
+        data: data,
+        success: function (data) {
+          $('ul.secrets_list').append($("<li>").text(data.title));
 
-    })
-  })
-</script> -->
+          $currentTarget.find("input#secret_title").val("");
+        }
+      });
+
+    });
+</script>

@@ -1,10 +1,10 @@
-<h1>Users Index</h1>
+<h1>Users</h1>
 
 <ul>
   <% @users.each do |user| %>
+  <% next if user == current_user %>
 
-  <li><%= link_to user.username + "'s Wall", user_url(user) %>
-
+  <li><%= link_to "Visit " + user.username + "'s Wall", user_url(user) %>
 
     <% if Friendship.can_friend?(current_user.id, user.id) %>
       <% friend_status = 'can-friend'%>
@@ -34,10 +34,10 @@ $(function() {
     $(button).html('Friending..');
 
     $.ajax({
-      url: 'http://localhost:3000/users/' + $(this).attr('data-inid') + '/friendships',
+      url: '/users/' + $(this).attr('data-inid') + '/friendships',
       type: "POST",
       success: function () {
-        $(button).html('Add Friend!')
+        $(button).html("Add Friend!");
         toggleFriendButtons(button);
       }
     })
@@ -49,11 +49,10 @@ $(function() {
     $(button).html('Unfriending..');
 
     $.ajax({
-      url: 'http://localhost:3000/users/' + $(this).attr('data-inid')
-        + '/friendships/' + $(this).attr('data-outid'),
+      url: '/users/' + $(this).attr('data-inid') + '/friendships/' + $(this).attr('data-outid'),
       type: "DELETE",
       success: function () {
-        $(button).html('Unfriend!')
+        $(button).html("Unfriend!");
         toggleFriendButtons(button);
       }
     })
