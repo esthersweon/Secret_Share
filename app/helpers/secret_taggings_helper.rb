@@ -1,0 +1,2 @@
+module SecretTaggingsHelper
+end

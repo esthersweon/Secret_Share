@@ -24,8 +24,8 @@ class SecretsController < ApplicationController
   end
 
   # def destroy
-  #   @secret = Secret.find(params[:id])
-  #   @secret.destroy
+  #   @secret = Secret.where(id: params[:id]).first
+  #   @secret.destroy!
   #   redirect_to user_url(@secret.recipient_id)
   # end
 
