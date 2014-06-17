@@ -9,12 +9,12 @@
       <input type="hidden" name="secret[id]" value="<%= secret.id %>">
       <input type="submit" value="Delete"%>
     </form> -->
-  </li>
-    <ul>
+    <ul>Tags
       <% secret.tags.each do |tag| %>
         <li><%= tag.title %></li>
       <% end %>
     </ul>
+  </li>
   <% end %>
 </ul>
 
@@ -30,7 +30,7 @@
 
 
 <script>
-    $("form.secrets_form").on("submit", function (event) {
+    $("form.secrets-form").on("submit", function (event) {
       event.preventDefault();
 
       var $currentTarget = $(event.currentTarget);
