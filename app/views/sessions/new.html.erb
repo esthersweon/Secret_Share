@@ -1,5 +1,10 @@
 <h1>Sign In</h1>
-<%= link_to "New to SecretShare?", new_user_url %>
+
+<% if flash.now[:errors] %>
+  <% flash.now[:errors].each do |error| %> 
+    <%= error %>
+  <% end %>
+<% end %>
 <br><br>
 
 <form action="<%= session_url %>" method="post">
@@ -24,3 +29,6 @@
 
   <input type="submit" value="Log in">
 </form>
+
+<br>
+<%= link_to "New to SecretShare?", new_user_url %>

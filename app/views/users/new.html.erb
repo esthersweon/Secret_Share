@@ -1,5 +1,13 @@
 <h1>Create User</h1>
-<%= link_to "Existing User?", new_session_url %>
+
+<% if flash.now[:errors] %>
+  <% flash.now[:errors].each do |error| %> 
+    <%= error %>
+  <% end %>
+<% end %>
 <br><br>
 
 <%= render "form", user: @user %>
+
+<br>
+<%= link_to "Existing User?", new_session_url %>
